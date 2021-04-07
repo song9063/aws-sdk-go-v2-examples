@@ -1,0 +1,37 @@
+@startuml
+
+
+entity User {
+    Username
+    Email
+    Birthdate
+    Address
+    Status
+    Interests
+}
+
+entity Friendship {
+    Fllowing User
+    Followed User
+    Timestamp
+}
+
+entity Photo {
+    Username
+    Timestamp
+    Location
+}
+
+entity Reaction {
+    Photo
+    Reaction
+    Reacting User
+    Timestamp
+}
+
+User }o--o{ Friendship
+User --o{ Photo
+Photo --o{ Reaction
+
+
+@enduml
