@@ -76,7 +76,9 @@ func main() {
 	client := dynamodb.NewFromConfig(cfg)
 	qOut, err := fetchPhotoAndReactions(client, userName, timeStamp)
 	if err != nil {
+		// Index is still backfilling. Please try again in a moment.
 		log.Fatal(err)
+
 	}
 
 	var photos []map[string]types.AttributeValue = nil
