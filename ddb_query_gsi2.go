@@ -1,7 +1,7 @@
 package main
 
 //https://aws.amazon.com/ko/getting-started/hands-on/design-a-database-for-a-mobile-app-with-dynamodb/5/
-// find_following_for_user.py
+// find_and_enrich_following_for_user.py
 
 import (
 	"context"
@@ -42,8 +42,30 @@ func main() {
 		},
 		ScanIndexForward: aws.Bool(true),
 	}
-	objectDump(qInput)
 	output, err := client.Query(context.TODO(), &qInput)
 
-	objectDump(output.Items)
+	arKeys := make([]map[string]types.AttributeValue, 0, 100)
+	for _, user := range output.Items {
+		val := (user["followedUser"]).(*types.AttributeValueMemberS).Value
+		key := map[string]types.AttributeValue{
+			"PK": &types.AttributeValueMemberS{
+				Value: fmt.Sprintf("USER#%s", val),
+			},
+			"SK": &types.AttributeValueMemberS{
+				Value: fmt.Sprintf("#METADATA#%s", val),
+			},
+		}
+		arKeys = append(arKeys, key)
+	}
+	bOut, err := client.BatchGetItem(context.TODO(), &dynamodb.BatchGetItemInput{
+		RequestItems: map[string]types.KeysAndAttributes{
+			tableName: types.KeysAndAttributes{
+				Keys: arKeys,
+			},
+		},
+	})
+	if err != nil {
+		log.Fatal(err)
+	}
+	objectDump(bOut)
 }
