@@ -1,5 +1,7 @@
 package main
 
+// https://aws.amazon.com/ko/getting-started/hands-on/design-a-database-for-a-mobile-app-with-dynamodb/4/
+
 import (
 	"bufio"
 	"context"
