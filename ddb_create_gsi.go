@@ -1,6 +1,7 @@
 package main
 
 // https://aws.amazon.com/ko/getting-started/hands-on/design-a-database-for-a-mobile-app-with-dynamodb/5/
+// add_inverted_index.py
 // https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/service/dynamodb@v1.2.1#Client.UpdateTable
 
 import (
@@ -22,7 +23,7 @@ func objectDump(obj interface{}) {
 
 func main() {
 	const tableName = "quick-photos"
-	const indexName = "InvertedIndexEx"
+	const indexName = "InvertedIndex"
 
 	cfg, err := config.LoadDefaultConfig(context.TODO())
 	if err != nil {
