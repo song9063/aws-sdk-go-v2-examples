@@ -1,5 +1,6 @@
 # https://docs.aws.amazon.com/ko_kr/cli/latest/reference/dynamodb/index.html
-
+# https://www.aws.training/Details/eLearning?id=65040
+# Exploring the DynamoDB API and the AWS SDKs
 
 # List of tables
 aws dynamodb list-tables --endpoint-url http://localhost:8000

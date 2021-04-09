@@ -101,7 +101,7 @@ func main() {
 			log.Fatal(err)
 		}
 
-		time.Sleep(1500 * time.Millisecond)
+		time.Sleep(220 * time.Millisecond)
 	}
 
 }
