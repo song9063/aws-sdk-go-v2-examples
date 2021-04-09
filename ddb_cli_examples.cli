@@ -1,0 +1,50 @@
+# https://docs.aws.amazon.com/ko_kr/cli/latest/reference/dynamodb/index.html
+
+
+# List of tables
+aws dynamodb list-tables --endpoint-url http://localhost:8000
+
+
+# Create a table
+# PK=year, SK=title
+aws dynamodb create-table \
+    --table-name Movies \
+    --attribute-definitions \
+        AttributeName=year,AttributeType=N \
+        AttributeName=title,AttributeType=S \
+    --key-schema \
+        AttributeName=year,KeyType=HASH \
+        AttributeName=title,KeyType=RANGE \
+    --billing-mode PROVISIONED \
+    --provisioned-throughput \
+        ReadCapacityUnits=10,WriteCapacityUnits=10 \
+    --endpoint-url http://localhost:8000
+
+
+# Write an item
+aws dynamodb put-item \
+    --table-name Movies \
+    --item \
+        '{"year": {"N": "1900"},
+            "title": {"S": "Example 1"}}' \
+    --endpoint-url http://localhost:8000
+
+
+# Query a table
+# * "year" is a reserved word in DynamoDB
+aws dynamodb query \
+    --endpoint-url http://localhost:8000 \
+    --table-name Movies \
+    --key-condition-expression "#y = :yr" \
+    --projection-expression "title,#y" \
+    --expression-attribute-names '{"#y": "year"}' \
+    --expression-attribute-values '{":yr": {"N": "1900"}}'
+
+
+# Scan a table
+aws dynamodb scan \
+    --endpoint-url http://localhost:8000 \
+    --table-name Movies \
+    --filter-expression "title = :name" \
+    --expression-attribute-values '{":name": {"S":"Example 1"}}' \
+    --return-consumed-capacity 'TOTAL'
